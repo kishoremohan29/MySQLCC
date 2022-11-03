@@ -1,0 +1,43 @@
+SE Hands_on;
+CREATE TABLE Department
+(
+Dept_no char(3) primary key,
+Dept_name varchar(36) not null,
+Mgrno char(6),
+Admr_dept char(3) not null,
+Location char(16)
+);
+CREATE TABLE employee
+(
+Emp_no char(6) not null,
+First_name varchar(12) not null,
+Mid_init char(1) not null,
+Last_name varchar(15) not null,
+Work_dept char(3) ,
+Phone_no char(10) check(Phone_no>='0000000000' and Phone_no <='9999999999'),
+Hire_date date ,
+Job char(9),
+Ed_level smallint,
+Sex char(1),
+Birth_date date,
+Salary decimal(9,2),
+Bonus decimal(9,2),
+Comm decimal(9,2),
+foreign key(Work_dept) references Department(Dept_no)
+);
+INSERT INTO Department VALUES
+(1, 'IT', 10, 'CS', 'KERALA'),
+(2, 'SALES', 12, 'MGT', 'GOA'),
+(3, 'IT', 14, 'CS', 'BANGLORE'),
+(4, 'HR', 16, 'MGT', 'KERALA');
+SELECT *FROM Department;
+select Dept_name as Worker_Department , location, Mgrno and Dept_name as Manager_Department from Department;
+select e.mgrno,d.Dept_no as 'Manager_Department' from Department e join Department d where e.Admr_dept=d.Dept_no;
+select employee.Emp_no, Department.Mgrno, Department.Dept_name as 'Worker_Department', Department.Location
+from Department join employee on employee.Work_dept=Department.Dept_no;
+
+select q1.Worker_Department, q1.Location, q2.Manager_Department
+from(select employee.Emp_no, Department.Mgrno, Department.Dept_name as 'Worker_Department', Department.Location
+from Department join employee on employee.Work_Dept=Department.Dept_no)q1
+join(select e.Mgrno, d.Dept_name as 'Manager_Department' from Department e join Department d where e.Admr_dept=d.Dept_no )q2
+on q1.Mgrno=q2.Mgrno where q1.Worker_Department!=q2.Manager_Department order by q1.Worker_Department asc;
