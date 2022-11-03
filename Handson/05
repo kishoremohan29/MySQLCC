@@ -1,0 +1,10 @@
+use Hands_on;
+
+DELIMITER $$
+create PROCEDURE employeesDept(in Dept_no char(3))
+begin
+	select Last_name as 'Names' from employee where Work_dept=Dept_no;
+end$$
+
+DELIMITER $$
+call employeesdept(11);
